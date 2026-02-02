@@ -56,7 +56,7 @@ Install [NodeJS](https://nodejs.org), version 14 or newer.
 
 Clone this project or download it (this `nodejs` branch only). It's recommended to install [GitHub desktop](https://desktop.github.com/). To clone it via command line, use the following (**Terminal** on MacOSX/Linux, **Git Shell** on Windows):
 
-    git clone https://github.com/Autodesk-Platform-Services/aps-revit-rcw-migrate-automation
+    git clone https://github.com/gosmith/aps-revit-rcw-migrate-automation
 
 Install the required packages using `npm install`.
 
@@ -108,7 +108,7 @@ Open the browser: [http://localhost:3000](http://localhost:3000), migrate RCW mo
 
 To deploy this application to Heroku, the **Callback URL** for APS must use your `.herokuapp.com` address. After clicking on the button below, at the Heroku Create New App page, set your Client ID, Secret, Callback URL and Revit Design Automation variables for APS.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Autodesk-Platform-Services/aps-revit-rcw-migrate-automation)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gosmith/aps-revit-rcw-migrate-automation)
 
 Watch [this video](https://www.youtube.com/watch?v=Oqa9O20Gj0c) as reference on how to deploy samples to Heroku.
 

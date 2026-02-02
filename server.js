@@ -12,8 +12,12 @@ app.use( require('./routes/hubs.js'));
 app.use( require('./routes/revitAutomation.js'));
 app.use( require('./routes/automationConfig.js'));
 app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.statusCode).json(err);
+    console.error('[ERROR] Request failed:', req.method, req.url);
+    console.error('[ERROR] Message:', err.message);
+    console.error('[ERROR] Stack:', err.stack);
+    console.error('[ERROR] Full error:', JSON.stringify(err, null, 2));
+    const statusCode = err.statusCode || err.status || 500;
+    res.status(statusCode).json({ error: err.message, details: err });
 });
 
 

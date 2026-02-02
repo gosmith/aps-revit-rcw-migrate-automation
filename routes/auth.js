@@ -5,7 +5,9 @@ let router = express.Router();
 
 
 router.get('/api/auth/login', function (req, res) {
-    res.redirect(getAuthorizationUrl());
+    const authUrl = getAuthorizationUrl();
+    console.log('[AUTH] Login initiated, redirecting to:', authUrl);
+    res.redirect(authUrl);
 });
 
 router.get('/api/auth/logout', function (req, res) {
@@ -13,7 +15,8 @@ router.get('/api/auth/logout', function (req, res) {
     res.redirect('/');
 });
 
-router.get('/api/auth/callback', authCallbackMiddleware, function (req, res) {
+router.get('/callback/oauth', authCallbackMiddleware, function (req, res) {
+    console.log('[AUTH] Callback successful, redirecting to home');
     res.redirect('/');
 });
 

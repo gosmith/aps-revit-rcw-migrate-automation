@@ -1,7 +1,7 @@
 {
     "name": "aps-revit-rcw-migrate-automation",
     "description": "This sample demostrated how to batch migrate Revit Cloud Worksharing (RCW) models from one BIM 360/ACC project to another using Revit Automation API.",
-    "repository": "https://github.com/autodesk-platform-services/aps-revit-rcw-migrate-automation",
+    "repository": "https://github.com/gosmith/aps-revit-rcw-migrate-automation",
     "logo": "https://cdn.autodesk.io/favicon.ico",
     "keywords": [
         "autodesk",

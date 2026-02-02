@@ -12,19 +12,34 @@ const dataManagementClient = new DataManagementClient(sdk);
 
 service.getClientId = () => { return APS_CLIENT_ID; }
 
-service.getAuthorizationUrl = () => authenticationClient.authorize(APS_CLIENT_ID, ResponseType.Code, APS_CALLBACK_URL, [
-    Scopes.DataRead,
-    Scopes.DataWrite,
-    Scopes.AccountRead,
-    Scopes.AccountWrite
-]);
+service.getAuthorizationUrl = () => {
+    console.log('[AUTH] Generating auth URL with callback:', APS_CALLBACK_URL);
+    console.log('[AUTH] Client ID:', APS_CLIENT_ID);
+    return authenticationClient.authorize(APS_CLIENT_ID, ResponseType.Code, APS_CALLBACK_URL, [
+        Scopes.DataRead,
+        Scopes.DataWrite,
+        Scopes.AccountRead,
+        Scopes.AccountWrite
+    ]);
+};
 
 service.authCallbackMiddleware = async (req, res, next) => {
-    const credentials = await authenticationClient.getThreeLeggedToken(APS_CLIENT_ID, req.query.code, APS_CALLBACK_URL,{clientSecret:APS_CLIENT_SECRET});
-    req.session.token = credentials.access_token;
-    req.session.refresh_token = credentials.refresh_token;
-    req.session.expires_at = Date.now() + credentials.expires_in * 1000;
-    next();
+    console.log('[AUTH] Callback received');
+    console.log('[AUTH] Query params:', req.query);
+    console.log('[AUTH] Using callback URL:', APS_CALLBACK_URL);
+
+    try {
+        const credentials = await authenticationClient.getThreeLeggedToken(APS_CLIENT_ID, req.query.code, APS_CALLBACK_URL,{clientSecret:APS_CLIENT_SECRET});
+        console.log('[AUTH] Token exchange successful, expires_in:', credentials.expires_in);
+        req.session.token = credentials.access_token;
+        req.session.refresh_token = credentials.refresh_token;
+        req.session.expires_at = Date.now() + credentials.expires_in * 1000;
+        next();
+    } catch (error) {
+        console.error('[AUTH] Token exchange failed:', error.message);
+        console.error('[AUTH] Error details:', error);
+        next(error);
+    }
 };
 
 
