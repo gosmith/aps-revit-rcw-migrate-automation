@@ -51,18 +51,27 @@ service.authRefreshMiddleware = async (req, res, next) => {
     }
 
     if (expires_at < Date.now()) {
-        const credentials = await authenticationClient.refreshToken(refresh_token, APS_CLIENT_ID, {
-            clientSecret: APS_CLIENT_SECRET,
-            scopes: [
-                Scopes.DataRead,
-                Scopes.DataWrite,
-                Scopes.AccountRead,
-                Scopes.AccountWrite
-            ]
-        });
-        req.session.token = credentials.access_token;
-        req.session.refresh_token = credentials.refresh_token;
-        req.session.expires_at = Date.now() + credentials.expires_in * 1000;
+        try {
+            const credentials = await authenticationClient.refreshToken(refresh_token, APS_CLIENT_ID, {
+                clientSecret: APS_CLIENT_SECRET,
+                scopes: [
+                    Scopes.DataRead,
+                    Scopes.DataWrite,
+                    Scopes.AccountRead,
+                    Scopes.AccountWrite
+                ]
+            });
+            req.session.token = credentials.access_token;
+            req.session.refresh_token = credentials.refresh_token;
+            req.session.expires_at = Date.now() + credentials.expires_in * 1000;
+        } catch (error) {
+            console.error('[AUTH] Refresh token failed:', error?.response?.data || error.message);
+            req.session.token = null;
+            req.session.refresh_token = null;
+            req.session.expires_at = null;
+            res.status(401).end();
+            return;
+        }
     }
     req.oAuth3LeggedToken = {
         access_token: req.session.token,
