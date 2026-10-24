@@ -193,7 +193,7 @@ service.getFolderContents = async (projectId, folderId, access_token) => {
         if (name == '' ) { // BIM 360 Items with no displayName also don't have storage, so not file to transfer
             return null;
         } 
-        if(item.attributes.extension.type == "items:autodesk.bim360:C4RModel" || item.attributes.extension.type == "items:autodesk.bim360.file" || item.attributes.extension.type == "folders:autodesk.bim360:Folder" ){
+        if(item.attributes.extension.type == "items:autodesk.bim360:C4RModel" || item.attributes.extension.type == "items:autodesk.bim360:File" || item.attributes.extension.type == "folders:autodesk.bim360:Folder" ){
             return createTreeNode(
                 item.links.self.href,
                 name,

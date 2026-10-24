@@ -136,7 +136,7 @@ router.post('/designautomation/appbundles', async( req, res, next) => {
 
 		// update alias pointing to v+1
 		const aliasSpec = {
-				version: newAppVersion.Version
+				version: newAppVersion.version
 			};
 		try {
 			const newAlias = await api.modifyAppBundleAlias(appBundleName, Utils.Alias, aliasSpec);
@@ -215,29 +215,28 @@ router.post('/designautomation/activities', async( req, res, next) => {
     }
     const qualifiedAppBundleId = `${Utils.NickName}.${appBundleName}+${Utils.Alias}`;
 	const qualifiedActivityId = `${Utils.NickName}.${activityName}+${Utils.Alias}`;
-    if( !activities.data.includes( qualifiedActivityId ) ){
-        const activitySpec = {
-            Id : activityName,
-            Appbundles : [ qualifiedAppBundleId ],
-            CommandLine : [ "$(engine.path)\\\\revitcoreconsole.exe /i \"$(args[rvtFile].path)\" /al \"$(appbundles[" + appBundleName + "].path)\"" ],           
-            Engine : engineName,
-            Parameters :
-            {
-                rvtFile: {
-                    verb: "get",
-                    description: "Input Revit model file (downloaded from URL)",
-                    required: false
-                },
-                inputParams: {
-                    verb: "get",
-                    description: "Input parameters JSON file including location of the target cloud model",
-                    localName: "params.json",
-                    required: false
-                }
+    const activitySpec = {
+        Appbundles : [ qualifiedAppBundleId ],
+        CommandLine : [ "$(engine.path)\\\\revitcoreconsole.exe /i \"$(args[rvtFile].path)\" /al \"$(appbundles[" + appBundleName + "].path)\"" ],
+        Engine : engineName,
+        Parameters :
+        {
+            rvtFile: {
+                verb: "get",
+                description: "Input Revit model file (downloaded from URL)",
+                required: false
+            },
+            inputParams: {
+                verb: "get",
+                description: "Input parameters JSON file including location of the target cloud model",
+                localName: "params.json",
+                required: false
             }
         }
+    }
+    if( !activities.data.includes( qualifiedActivityId ) ){
 		try {
-			const newActivity = await api.createActivity(activitySpec);
+			const newActivity = await api.createActivity({ Id: activityName, ...activitySpec });
 		} catch (ex) {
 			console.error(ex);
 			return (res.status(500).json({
@@ -262,9 +261,28 @@ router.post('/designautomation/activities', async( req, res, next) => {
             Status : "Created"
         });
     }
+    // activity already exists: create a new version so the engine can change,
+    // then repoint the alias to it
+    let newActivityVersion = null;
+    try {
+        newActivityVersion = await api.createActivityVersion(activityName, activitySpec);
+    } catch (ex) {
+        console.error(ex);
+        return (res.status(500).json({
+            diagnostic: 'Failed to create new activity version'
+        }));
+    }
+    try {
+        await api.modifyActivityAlias(activityName, Utils.Alias, { version: newActivityVersion.version });
+    } catch (ex) {
+        console.error(ex);
+        return (res.status(500).json({
+            diagnostic: 'Failed to update the alias for activity'
+        }));
+    }
     return res.status(200).json({
         Activity : qualifiedActivityId,
-        Status : "Existing"
+        Status : "Updated"
     });
 
 })

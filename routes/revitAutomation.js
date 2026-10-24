@@ -54,9 +54,9 @@ router.post('/da4revit/v1/upgrader/files/:source_file_url/folders/:destinate_fol
     const inputStorageId = versionInfo.relationships.storage.data.id;
     const fileName = versionInfo.attributes.name;
     const verstionType = versionInfo.attributes.extension.type;
-    if (verstionType !== 'versions:autodesk.bim360:C4RModel') {
-        console.log('info: only RCM is supported');
-        res.status(500).end('only RCM is supported');
+    if (verstionType !== 'versions:autodesk.bim360:C4RModel' && verstionType !== 'versions:autodesk.bim360:File') {
+        console.log('info: only RCM or plain BIM 360/ACC files are supported');
+        res.status(500).end('only RCM or plain BIM 360/ACC files are supported');
         return;
     }
 

@@ -11,7 +11,7 @@
 
 ![Windows](https://img.shields.io/badge/Plugins-Windows-lightgrey.svg)
 ![.NET](https://img.shields.io/badge/.NET%20Framework-4.8-blue.svg)
-[![Revit-2025](https://img.shields.io/badge/Revit-2025%20%7C%202026-lightgrey.svg)](http://autodesk.com/revit)
+[![Revit-2025](https://img.shields.io/badge/Revit-2025%20%7C%202026%20%7C%202027-lightgrey.svg)](http://autodesk.com/revit)
 
 
 ![Advanced](https://img.shields.io/badge/Level-Advanced-red.svg)
@@ -19,7 +19,7 @@
 
 # Description
 
-This sample demonstrates how to migrate Revit Cloud Worksharing (RCW) models from one BIM 360/ACC project to another using Design Automation for Revit API. The application supports migrating RCW models (C4RModel type) to the latest Revit versions (2025, 2026) and can handle individual files or entire folders.
+This sample demonstrates how to migrate Revit Cloud Worksharing (RCW) models from one BIM 360/ACC project to another using Design Automation for Revit API. The application supports migrating RCW models (C4RModel type) to the latest Revit versions (2025, 2026, 2027) and can handle individual files or entire folders.
 
 
 # Live Demo
@@ -42,7 +42,7 @@ Watch the following video:
 1. **APS Account**: Learn how to create a APS Account, activate subscription and create an app at [this tutorial](https://tutorials.autodesk.io/). 
 2. **Visual Code**: Visual Code (Windows or MacOS).
 3. **ngrok**: Routing tool, [download here](https://ngrok.com/)
-4. **Revit 2025 or 2026**: required to compile changes into the plugin
+4. **Revit 2025, 2026 or 2027**: required to compile changes into the plugin
 5. **JavaScript ES6** syntax for server-side.
 6. **JavaScript** basic knowledge with **jQuery**
 7. **BIM 360 or ACC Account**: Required for accessing and migrating RCW models
@@ -143,7 +143,7 @@ After installing Github desktop for Windows, on the Git Shell, if you see a ***e
 
 ## Limitation
 - For Demo purpose, we only support **5** files to be migrated as maximum
-- Only supports migrating to Revit 2025 or 2026
+- Only supports migrating to Revit 2025, 2026 or 2027
 - Only supports Revit Cloud Worksharing (RCW) models (C4RModel type)
 - Only supports migration between BIM 360/ACC projects
 - Migrating linked Revit models is not supported

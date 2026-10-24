@@ -16,7 +16,6 @@
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
     "forge-apis": "^0.9.7",
-    "request": "^2.88.2",
     "socket.io": "^4.7.2"
   }
 }
